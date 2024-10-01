@@ -11,18 +11,21 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+env = environ.Env()
+env.read_env(env_file=str(Path(BASE_DIR, '.env')))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-b3#ofm&x%^bei9lai7o=1v47g034772$p*ywwuxk(=&^uo9y92'
+SECRET_KEY = str(env("SECRET_KEY"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = str(env("DEBUG"))
 
 ALLOWED_HOSTS = []
 
@@ -75,11 +78,11 @@ WSGI_APPLICATION = 'deposit.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'deposit',
-        'USER': 'postgres',
-        'PASSWORD': '123123',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': str(env("DATABASE_NAME")),
+        'USER': str(env("DATABASE_USER")),
+        'PASSWORD': str(env("DATABASE_PASSWORD")),
+        'HOST': str(env("DATABASE_HOST")),
+        'PORT': str(env("DATABASE_PORT")),
     }
 }
 
@@ -121,7 +124,6 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 # REST_framework configuration
 REST_FRAMEWORK = {
